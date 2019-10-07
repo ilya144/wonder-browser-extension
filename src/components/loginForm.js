@@ -106,24 +106,7 @@ function LoginForm(props) {
             disabled={props.isFetching}
             onClick={e => {
                 e.preventDefault();
-                // console.log("Данные");
-                // console.table({email: email, password: password});
-                props.signIn(email, password);
-                // requestBegin({
-                //   route: Routes.new_user_session_path(),
-                //   target: 'signin',
-                //   method: 'POST',
-                //   params: {
-                //     authenticity_token: authToken,
-                //     utf8: '✓',
-                //     user: {
-                //       email,
-                //       password,
-                //       remember_me: rememberMe
-                //     },
-                //     commit: 'Log in'
-                //   }
-                // })
+                props.signIn(email, password, rememberMe);
             }}
             >
             Войти

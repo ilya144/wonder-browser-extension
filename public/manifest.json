@@ -16,9 +16,34 @@
     "128": "favicon-32x32.png"
   },
   "permissions": [
-    "storage",
     "https://wondersourcing.ru/*",
-    "cookies"
+    "storage",
+    "cookies",
+    "tabs"
+  ],
+  "content_scripts":[
+    {
+      "matches":[
+        "*://github.com/*",
+        "*://github.io/*",
+        "*://vk.com/*",
+        "*://twitter.com/*",
+        "*://stackoverflow.com/*",
+        "*://ru.stackoverflow.com/*",
+        "*://habr.com/*",
+        "*://habrahabr.ru/*",
+        "*://toster.ru/*",
+        "*://facebook.com/*",
+        "*://fb.com/*",
+        "*://linkedin.com/*",
+        "*://behance.net/*",
+        "*://dribbble.com/*"
+      ],
+      "js":[
+        "pako.min.js",
+        "dumperHTML.js"
+      ]
+    }
   ],
   "content_security_policy": "object-src 'self' 'sha256-cUx7maUS4dOhO4zvgCAqr+PiU/iDdBml7cj03bGh9yg=';script-src 'self' 'sha256-cUx7maUS4dOhO4zvgCAqr+PiU/iDdBml7cj03bGh9yg='; style-src-elem 'self' 'unsafe-inline' https://fonts.googleapis.com; style-src 'self' 'sha256-cUx7maUS4dOhO4zvgCAqr+PiU/iDdBml7cj03bGh9yg='"
 }

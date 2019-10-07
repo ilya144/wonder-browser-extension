@@ -3,19 +3,16 @@ import ACTIONS from '../actions/types';
 import axios from 'axios';
 
 
-export default function* signInSaga({ email, password }){
+export default function* signInSaga({ email, password, rememberMe }){
     yield put({ type: ACTIONS.LOGIN_REQUEST});
 
     const loginData = { // use previously JSON.stringify, doesn't work
         "user": {
             email,
             password,
-            remember_me: 1
+            remember_me: rememberMe
         } 
     };
-    // const formData = new FormData();
-    // formData.append('email', email);
-    // formData.append('password', password);
 
     const { data, status } = yield call((data) => (
         axios.post("https://wondersourcing.ru/users/sign_in.json", data)
@@ -32,6 +29,7 @@ export default function* signInSaga({ email, password }){
 
     if (status === 201){
         yield put({type: ACTIONS.LOGIN_RESPONSE, userData: data});
+        // TODO if (rememberMe) { setCookie(fromResponse) }
     } else {
         if (status === 401) {
             yield put({ type: ACTIONS.LOGIN_ERROR, error: data.error })

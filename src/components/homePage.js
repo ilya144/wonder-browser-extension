@@ -5,7 +5,7 @@ import {
     // Button,
     // Link,
     Avatar,
-    // Typography
+    Typography
 } from '@material-ui/core';
 
 
@@ -13,11 +13,11 @@ const HomePage = (props) => {
 
     return(
         <div>
-            <Box display="flex" justifyContent="space-between">
-                <Avatar src={props.userData} />
-                <p>name here</p>
+            <Box display="flex" justifyContent="space-between" alignItems="center">
+                <Avatar src={props.userData.avatar_url} />
+                <Typography>{props.userData.first_name} {props.userData.last_name}</Typography>
             </Box>
-            (
+            {
                 Date.parse(
                     props.userData.subscription.valid_through
                 ) - Date.parse(
@@ -27,7 +27,7 @@ const HomePage = (props) => {
                 <p>Доступ имеется</p>
                     : 
                 <p>Доступ отстуствует, требуется оплата</p>
-            )
+            }
         </div>
     )
 }

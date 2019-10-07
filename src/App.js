@@ -1,5 +1,5 @@
-import React, {useState} from 'react';
-// import { makeStyles } from '@material-ui/core/styles';
+import React from 'react';
+
 import Container from '@material-ui/core/Container';
 import HomePage from './components/homePage';
 import LoginPage from './components/loginPage';
@@ -10,7 +10,6 @@ const App = (props) => {
 
     return(
         <Container className="App" maxWidth="xs">
-            {console.log(props.userData)}
             {
                 props.userData.id===undefined ? <LoginPage/> : <HomePage/>
             }
