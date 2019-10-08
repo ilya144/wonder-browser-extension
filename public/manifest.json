@@ -5,6 +5,7 @@
   "description": "TODO desc and name too",
   "version": "0.0.1",
 
+  
   "browser_action": {
     "default_popup": "index.html",
     "default_title": "WonderSourcing parse plugin\nTODO this title"
@@ -19,7 +20,11 @@
     "https://wondersourcing.ru/*",
     "storage",
     "cookies",
-    "tabs"
+    "tabs",
+    "notifications"
+  ],
+  "web_accessible_resources": [
+    "ws-logo-bw.png"
   ],
   "content_scripts":[
     {
@@ -45,5 +50,9 @@
       ]
     }
   ],
+  "background": {
+    "persistent": false,
+    "scripts": [ "background.js" ]
+  },
   "content_security_policy": "object-src 'self' 'sha256-cUx7maUS4dOhO4zvgCAqr+PiU/iDdBml7cj03bGh9yg=';script-src 'self' 'sha256-cUx7maUS4dOhO4zvgCAqr+PiU/iDdBml7cj03bGh9yg='; style-src-elem 'self' 'unsafe-inline' https://fonts.googleapis.com; style-src 'self' 'sha256-cUx7maUS4dOhO4zvgCAqr+PiU/iDdBml7cj03bGh9yg='"
 }

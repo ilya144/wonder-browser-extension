@@ -1,22 +1,37 @@
 console.log("I'm alive");
 
+function removeTags(DOM, tagName){
+    Array.from(DOM.getElementsByTagName(tagName)).map((e) => e.remove());
+}
 
 function sendToStorageHTML(){
     console.log("start sending dump");
-    // TODO remove scripts, styles and head from HTML
+    
+    const virtualDOM = document.implementation.createHTMLDocument("virtual");
+    virtualDOM.body.innerHTML = document.body.innerHTML;
+    ["style", "script"].map((tag) => removeTags(virtualDOM.body, tag));
+
     const payload = pako.gzip(
-        document.documentElement.innerHTML,
+        virtualDOM.body.innerHTML,
         {to: "string"}
     );
-    chrome.storage.sync.set({
-        "parsed_html": {
-            [window.location.href] : {
-                "html": payload,
-                "type": "gzip",
-                "resolved": false
-            }
-        }
+    chrome.runtime.sendMessage({
+        "IRI": window.location.hostname + window.location.pathname
+        "html": payload,
+        "type": "gzip",
+        "resolved": false,
+        "verbose": "only body without scripts and styles"
+
     }, () => console.log("HTML sended successfuly"));
+    // chrome.storage.sync.set({
+    //     "parsed_html": {
+    //         [window.location.href] : {
+    //             "html": payload,
+    //             "type": "gzip",
+    //             "resolved": false
+    //         }
+    //     }
+    // }, () => console.log("HTML sended successfuly"));
 }
 
 function matchInPathname(regexp){
@@ -33,39 +48,39 @@ function dumpHTML(){
     switch (window.location.hostname) {
         case "stackoverflow.com":
         case "ru.stackoverflow.com":
-            matchInPathname("users/[0-9]+/[\.a-zа-яё%\d_\-]+$");
+            matchInPathname("users/[0-9]+/[\.a-zа-яё%\d_\-]+$/?");
             break;
 
         case "github.com":
-            matchInPathname("(?!settings$|none$|no$|nope$|null$|github$)[\.a-zа-яё\%\d_\-]+$");
+            matchInPathname("(?!settings$|none$|no$|nope$|null$|github$)[0-9\.a-zа-яё\%_\-]+$/?");
             break;
             
         case "vk.com":
-            matchInPathname("(?!feed$|settings$|none$|no$|nope$|null$)[a-zd_\-\.]+$");
+            matchInPathname("(?!feed$|settings$|none$|no$|nope$|null$)[0-9a-zd_\-\.]+$/?");
             break;
         
         case "twitter.com":
-            matchInPathname("(?!settings$|none$|no$|nope$|null$)[\.a-z@\d_\-]+$");
+            matchInPathname("(?!settings$|none$|no$|nope$|null$)[\.a-z@0-9_\-]+$/?");
             break;
 
         case "fb.com":
         case "facebook.com":
             matchInPathname("profile\.php\?id\=(\d+)/i");
-            matchInPathname("(?!groups(/|$)|profile(/|$)|app_scoped_user_id(/|$))[\.a-zа-яё\%\d_\-]+$")
+            matchInPathname("(?!groups(/|$)|profile(/|$)|app_scoped_user_id(/|$))[\.a-zа-яё\%0-9_\-]+$/?")
             break;
 
         case "habr.com":
         case "habrahabr.ru":
-            matchInPathname("users/([\.a-zа-яё\%\d_\-]+)$");
+            matchInPathname("users/([\.a-zа-яё\%0-9_\-]+)$/?");
             break;
 
         case "linkedin.com":
             matchInPathname("in/([a-zа-яё\%\d_\-\.]+)$");
-            matchInPathname("pub/([a-zа-яё\%\d_\-\.]+)/[\.a-zа-яё\%\d_\-]+$") // убрал из последнего [] знак /
+            matchInPathname("pub/([a-zа-яё\%0-9_\-\.]+)/[\.a-zа-яё\%0-9_\-]+$/?") // убрал из последнего [] знак /
             break;
 
         case "toster.ru":
-            matchInPathname("user/([\.a-zа-яё\%\d_\-]+)$");
+            matchInPathname("user/([\.a-zа-яё\%0-9_\-]+)$/?");
             break;
         
         default:
@@ -73,7 +88,7 @@ function dumpHTML(){
     }
 
     if (Hostname.includes("github.io")){
-        if (Hostname.match("([a-zа-яё\%\d_\-]+).github.io")){
+        if (Hostname.match("([a-zа-яё\%0-9_\-]+).github.io")){
             sendToStorageHTML();
         }
     }
