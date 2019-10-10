@@ -25,7 +25,7 @@ function LoginForm(props) {
     const classes = useStyles();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [rememberMe, setRememberMe] = useState(0);
+    const [rememberMe, setRememberMe] = useState(1);
   
     return(
         <div>

@@ -14,22 +14,18 @@ export default function* signInSaga({ email, password, rememberMe }){
         } 
     };
 
-    const { data, status } = yield call((data) => (
-        axios.post("https://wondersourcing.ru/users/sign_in.json", data)
-    ), loginData, {
-        headers: {
-            'Content-Type': 'application/json',
-            'accept': 'application/json',
-            'Access-Control-Allow-Origin': '*'
-        },
-        withCredentials: true
-    });
-    console.log(data);
-    console.log(status);
+    const { data, status, ...rest } = yield call((data) => (
+        axios.post("https://wondersourcing.ru/users/sign_in.json", data, {
+            withCredentials: true,
+        })
+    ), loginData);
+    
+    // console.log(data);
+    // console.log(status);
+    // console.log(rest);
 
     if (status === 201){
         yield put({type: ACTIONS.LOGIN_RESPONSE, userData: data});
-        // TODO if (rememberMe) { setCookie(fromResponse) }
     } else {
         if (status === 401) {
             yield put({ type: ACTIONS.LOGIN_ERROR, error: data.error })
