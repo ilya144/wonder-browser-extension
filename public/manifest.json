@@ -11,20 +11,20 @@
     "default_title": "WonderSourcing parse plugin\nTODO this title"
   },
   "icons": {
-    "16": "favicon-32x32.png",
-    "32": "favicon-32x32.png",
-    "48": "favicon-32x32.png",
-    "128": "favicon-32x32.png"
+    "16": "img/favicon-32x32.png",
+    "32": "img/favicon-32x32.png",
+    "48": "img/favicon-32x32.png",
+    "128": "img/favicon-32x32.png"
   },
   "permissions": [
-    "https://wondersourcing.ru/*",
+    "*://*.wondersourcing.ru/*",
     "storage",
     "cookies",
     "tabs",
     "notifications"
   ],
   "web_accessible_resources": [
-    "ws-logo-bw.png"
+    "img/wondersourcing-logo.svg"
   ],
   "content_scripts":[
     {
@@ -45,14 +45,14 @@
         "*://dribbble.com/*"
       ],
       "js":[
-        "pako.min.js",
-        "dumperHTML.js"
+        "js/pako.min.js",
+        "js/dumperHTML.js"
       ]
     }
   ],
   "background": {
     "persistent": false,
-    "scripts": [ "background.js" ]
+    "scripts": [ "js/background.js" ]
   },
   "content_security_policy": "object-src 'self' 'sha256-cUx7maUS4dOhO4zvgCAqr+PiU/iDdBml7cj03bGh9yg=';script-src 'self' 'sha256-cUx7maUS4dOhO4zvgCAqr+PiU/iDdBml7cj03bGh9yg='; style-src-elem 'self' 'unsafe-inline' https://fonts.googleapis.com; style-src 'self' 'sha256-cUx7maUS4dOhO4zvgCAqr+PiU/iDdBml7cj03bGh9yg='"
 }

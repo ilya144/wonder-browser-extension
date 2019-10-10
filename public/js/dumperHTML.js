@@ -16,7 +16,7 @@ function sendToStorageHTML(){
         {to: "string"}
     );
     chrome.runtime.sendMessage({
-        "IRI": window.location.hostname + window.location.pathname
+        "IRI": encodeURIComponent(window.location.hostname + window.location.pathname),
         "html": payload,
         "type": "gzip",
         "resolved": false,
