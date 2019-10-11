@@ -5,4 +5,8 @@ export const signIn = (email, password, rememberMe) => ({
     email,
     password,
     rememberMe
-})
+});
+
+export const getSelf = () => ({
+    type: ACTIONS.GET_SELF_ACTION
+});
