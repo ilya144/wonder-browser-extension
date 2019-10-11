@@ -1,32 +1,79 @@
 chrome.runtime.onMessage.addListener((msg) => {
-    // TODO sending html to API
-    console.log(msg);
-    
-    fetch('https://wondersourcing.ru/users/sign_in.json',  {
-        headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
-        credentials: 'same-origin',
-        method: 'POST',
-        body: JSON.stringify({"user":{"email":"ils12rus@gmail.com","password":"pass1234","remember_me":true}}),
-        mode: 'cors' }).then(res => {
 
-        
-            chrome.cookies.getAll({"name": "_wonder_frontend_session"}, (cookie) => {
-                // console.log(cookie);
-                fetch("https://wondersourcing.ru/profiles/associated/"+msg.IRI, {
-                    method: "POST",
-                    body: msg.html,
-                    headers:{
-                        cookie: cookie[0].name+"="+cookie[0].value
-                    }
-                }).then(res => res.json().then(res => console.log(res)));
-            });
-    });
-
-    chrome.notifications.create({
-        type: "basic", 
-        iconUrl:"img/ws-logo-bw.png", 
-        title:"hello", 
-        message: "lorem ipsum"
-    });
+    chrome.cookies.getAll({"name": "_wonder_frontend_session"}, (cookie) => {
     
+        fetch("https://wondersourcing.ru/profiles/associated/"+msg.IRI, {
+            method: "POST",
+            body: msg.html,
+            credentials: 'same-origin',
+            headers:{
+                cookie: cookie[0].name+"="+cookie[0].value
+            }
+        }).then(res => {
+            console.log(res);
+            if (res.status===200){                        
+                res.json().then(data => {
+                    SendNotification( 200, data );
+                });
+            } else if ( [ 204, 401, 500 ].includes(res.status) ){
+                SendNotification( res.status );
+            } else {
+                SendNotification();
+            }
+        });
+    });
 });
+
+
+function SendNotification( type, data ){
+    let options;
+    
+    switch (type) {
+        case 200:
+            options = {
+                type: "list",
+                title: data.display_name,
+                items: [
+                    {title: "has_contacts", message: data.has_contacts.toString()},
+                    {title: "has_links", message: data.has_links.toString()}
+                ],
+                message: "Получена информация"
+            }
+            break;
+
+        case 204:
+            options = {
+                type: "basic",
+                title: "Пользователь отсутствует в базе",
+                message: ""
+            }
+            break;
+        
+        case 401:
+            options = {
+                type: "basic",
+                title: "Status 401",
+                message: "Необходимо авторизоваться"
+            }
+            break;
+
+        case 500:
+            options = {
+                type: "basic",
+                title: "Status 500",
+                message: "Сервис временно недоступен"
+            }
+            break;
+        
+        default:
+            options = {
+                type: "basic",
+                title: "Неизвестная ошибка",
+                message: "Сервис временно недоступен"
+            }
+            break;
+    }
+
+    options.iconUrl = "img/wondersourcing-logo.svg";
+    return chrome.notifications.create(options);
+}
