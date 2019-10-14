@@ -15,8 +15,15 @@ function sendToStorageHTML(){
         virtualDOM.body.innerHTML,
         {to: "string"}
     );
+
+    let pathname;
+    if (window.location.pathname.endsWith("/")) {
+        pathname = window.location.pathname.slice(0, -1);
+    } else {
+        pathname = window.location.pathname;
+    }
     chrome.runtime.sendMessage({
-        "IRI": encodeURIComponent(window.location.hostname + window.location.pathname),
+        "IRI": encodeURIComponent(window.location.hostname + pathname),
         "html": payload,
         "type": "gzip",
         "resolved": false,
@@ -48,39 +55,43 @@ function dumpHTML(){
     switch (window.location.hostname) {
         case "stackoverflow.com":
         case "ru.stackoverflow.com":
-            matchInPathname("users/[0-9]+/[\.a-zа-яё%\d_\-]+$/?");
+            matchInPathname("users/[0-9]+/[\.a-zа-яё%\d_\-]+/?$");
             break;
 
         case "github.com":
-            matchInPathname("(?!settings$|none$|no$|nope$|null$|github$)[0-9\.a-zа-яё\%_\-]+$/?");
+            matchInPathname("(?!settings$|none$|no$|nope$|null$|github$)[0-9\.a-zа-яё\%_\-]+/?$");
+            break;
+
+        case "moikrug.ru":
+            matchInPathname("(?!vacancies$|none$|no$|nope$|null$|resumes$|companies$|salaries$|courses$)[0-9\.a-zа-яё\%_\-]+/?$")
             break;
             
         case "vk.com":
-            matchInPathname("(?!feed$|settings$|none$|no$|nope$|null$)[0-9a-zd_\-\.]+$/?");
+            matchInPathname("(?!feed$|settings$|none$|no$|nope$|null$)[\.0-9a-zd_\-]+/?$");
             break;
         
         case "twitter.com":
-            matchInPathname("(?!settings$|none$|no$|nope$|null$)[\.a-z@0-9_\-]+$/?");
+            matchInPathname("(?!settings$|none$|no$|nope$|null$)[\.a-z@0-9_\-]+/?$");
             break;
 
         case "fb.com":
         case "facebook.com":
-            matchInPathname("profile\.php\?id\=(\d+)/i");
-            matchInPathname("(?!groups(/|$)|profile(/|$)|app_scoped_user_id(/|$))[\.a-zа-яё\%0-9_\-]+$/?")
+            matchInPathname("profile\.php\?id\=(\d+)/?$");
+            matchInPathname("(?!groups(/|$)|profile(/|$)|app_scoped_user_id(/|$))[\.a-zа-яё\%0-9_\-]+/?$")
             break;
 
         case "habr.com":
         case "habrahabr.ru":
-            matchInPathname("users/([\.a-zа-яё\%0-9_\-]+)$/?");
+            matchInPathname("users/([\.a-zа-яё\%0-9_\-]+)/?$");
             break;
 
         case "linkedin.com":
-            matchInPathname("in/([a-zа-яё\%\d_\-\.]+)$");
-            matchInPathname("pub/([a-zа-яё\%0-9_\-\.]+)/[\.a-zа-яё\%0-9_\-]+$/?") // убрал из последнего [] знак /
+            matchInPathname("in/([\.a-zа-яё\%\d_\-]+)/?$");
+            matchInPathname("pub/([\.a-zа-яё\%0-9_\-]+)/[\.a-zа-яё\%0-9_\-]+/?$")
             break;
 
         case "toster.ru":
-            matchInPathname("user/([\.a-zа-яё\%0-9_\-]+)$/?");
+            matchInPathname("user/([\.a-zа-яё\%0-9_\-]+)/?$");
             break;
         
         default:
@@ -88,7 +99,7 @@ function dumpHTML(){
     }
 
     if (Hostname.includes("github.io")){
-        if (Hostname.match("([a-zа-яё\%0-9_\-]+).github.io")){
+        if (Hostname.match("([a-zа-яё\%0-9_\-]+).github.io/?$")){
             sendToStorageHTML();
         }
     }
@@ -99,19 +110,3 @@ chrome.storage.sync.get("dump", (dump_on) => {
         dumpHTML();
     }
 });
-
-
-/*
-/^(?:https?:)?github.com\/(?!settings$|none$|no$|nope$|null$|github$)[a-zа-яё\%\d_\-\.]+$/i
-/^(?:https?:)?([a-zа-яё\%\d_\-]+).github.io/i
-/^(?:https?:)?vk.com\/(?!feed$|settings$|none$|no$|nope$|null$)[a-zd_\-\.]+$/i
-/^(?:https?:)?twitter.com\/(?!settings$|none$|no$|nope$|null$)[a-z@\d_\-\.]+$/i
-/^(?:https?:)?(ru\.)?stackoverflow.com\/users\/([\d]+)\/([a-zа-яё\%\d_\-\.]+)$/i
-/^(?:https?:)?habr.com\/users\/([a-zа-яё\%\d_\-\.]+)$/i
-/^(?:https?:)?habrahabr.ru\/users\/([a-zа-яё\%\d_\.\-]+)$/i
-/^(?:https?:)?toster.ru\/user\/([a-zа-яё\%\d_\-\.]+)$/i
-/^(?:https?:)?(facebook|fb).com\/profile\.php\?id\=(\d+)/i
-/^(?:https?:)?(facebook|fb).com\/(?!groups(\/|$)|profile(\/|$)|app_scoped_user_id(\/|$))[a-zа-яё\%\d_\-\.]+$/i
-/^(?:https?:)?linkedin.com\/in\/([a-zа-яё\%\d_\-\.]+)$/i
-/^(?:https?:)?linkedin.com\/pub\/([a-zа-яё\%\d_\-\.]+)\/[a-zа-яё\%\d_\-\.\/]+$/i
-*/

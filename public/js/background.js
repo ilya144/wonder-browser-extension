@@ -34,8 +34,14 @@ function SendNotification( type, data ){
                 type: "list",
                 title: data.display_name,
                 items: [
-                    {title: "has_contacts", message: data.has_contacts.toString()},
-                    {title: "has_links", message: data.has_links.toString()}
+                    {
+                        title: "has_contacts",
+                        message: (data.has_contacts && data.has_contacts.toString()) || "null"
+                    },
+                    {
+                        title: "has_links", 
+                        message: (data.has_links && data.has_links.toString()) || "null"
+                    }
                 ],
                 message: "Получена информация"
             }
@@ -44,15 +50,15 @@ function SendNotification( type, data ){
         case 204:
             options = {
                 type: "basic",
-                title: "Пользователь отсутствует в базе",
-                message: ""
+                title: "WonderSoucing",
+                message: "Пользователь отсутствует в базе"
             }
             break;
         
         case 401:
             options = {
                 type: "basic",
-                title: "Status 401",
+                title: "WonderSoucing",
                 message: "Необходимо авторизоваться"
             }
             break;
@@ -60,7 +66,7 @@ function SendNotification( type, data ){
         case 500:
             options = {
                 type: "basic",
-                title: "Status 500",
+                title: "WonderSoucing",
                 message: "Сервис временно недоступен"
             }
             break;
@@ -68,8 +74,8 @@ function SendNotification( type, data ){
         default:
             options = {
                 type: "basic",
-                title: "Неизвестная ошибка",
-                message: "Сервис временно недоступен"
+                title: "WonderSoucing",
+                message: "Неизвестная ошибка"
             }
             break;
     }

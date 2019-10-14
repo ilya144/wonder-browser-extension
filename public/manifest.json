@@ -42,7 +42,8 @@
         "*://fb.com/*",
         "*://linkedin.com/*",
         "*://behance.net/*",
-        "*://dribbble.com/*"
+        "*://dribbble.com/*",
+        "*://moikrug.ru/*"
       ],
       "js":[
         "js/pako.min.js",
