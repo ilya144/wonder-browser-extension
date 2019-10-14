@@ -55,43 +55,43 @@ function dumpHTML(){
     switch (window.location.hostname) {
         case "stackoverflow.com":
         case "ru.stackoverflow.com":
-            matchInPathname("users/[0-9]+/[\.a-zа-яё%\d_\-]+/?$");
+            matchInPathname("^/users/[0-9]+/[\.a-zа-яё%\d_\-]+/?$");
             break;
 
         case "github.com":
-            matchInPathname("(?!settings$|none$|no$|nope$|null$|github$)[0-9\.a-zа-яё\%_\-]+/?$");
+            matchInPathname("^/(?!settings$|none$|no$|nope$|null$|github$)[0-9\.a-zа-яё\%_\-]+/?$");
             break;
 
         case "moikrug.ru":
-            matchInPathname("(?!vacancies$|none$|no$|nope$|null$|resumes$|companies$|salaries$|courses$)[0-9\.a-zа-яё\%_\-]+/?$")
+            matchInPathname("^/(?!vacancies$|none$|no$|nope$|null$|resumes$|companies$|salaries$|courses$)[0-9\.a-zа-яё\%_\-]+/?$")
             break;
             
         case "vk.com":
-            matchInPathname("(?!feed$|settings$|none$|no$|nope$|null$)[\.0-9a-zd_\-]+/?$");
+            matchInPathname("^/(?!feed$|settings$|none$|no$|nope$|null$)[\.0-9a-zd_\-]+/?$");
             break;
         
         case "twitter.com":
-            matchInPathname("(?!settings$|none$|no$|nope$|null$)[\.a-z@0-9_\-]+/?$");
+            matchInPathname("^/(?!settings$|none$|no$|nope$|null$)[\.a-z@0-9_\-]+/?$");
             break;
 
         case "fb.com":
         case "facebook.com":
-            matchInPathname("profile\.php\?id\=(\d+)/?$");
-            matchInPathname("(?!groups(/|$)|profile(/|$)|app_scoped_user_id(/|$))[\.a-zа-яё\%0-9_\-]+/?$")
+            matchInPathname("^/profile\.php\?id\=(\d+)/?$");
+            matchInPathname("^/(?!groups(/|$)|profile(/|$)|app_scoped_user_id(/|$))[\.a-zа-яё\%0-9_\-]+/?$")
             break;
 
         case "habr.com":
         case "habrahabr.ru":
-            matchInPathname("users/([\.a-zа-яё\%0-9_\-]+)/?$");
+            matchInPathname("^/users/([\.a-zа-яё\%0-9_\-]+)/?$");
             break;
 
         case "linkedin.com":
-            matchInPathname("in/([\.a-zа-яё\%\d_\-]+)/?$");
-            matchInPathname("pub/([\.a-zа-яё\%0-9_\-]+)/[\.a-zа-яё\%0-9_\-]+/?$")
+            matchInPathname("^/in/([\.a-zа-яё\%\d_\-]+)/?$");
+            matchInPathname("^/pub/([\.a-zа-яё\%0-9_\-]+)/[\.a-zа-яё\%0-9_\-]+/?$")
             break;
 
         case "toster.ru":
-            matchInPathname("user/([\.a-zа-яё\%0-9_\-]+)/?$");
+            matchInPathname("^/user/([\.a-zа-яё\%0-9_\-]+)/?$");
             break;
         
         default:
