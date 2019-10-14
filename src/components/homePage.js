@@ -2,11 +2,13 @@ import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import {
     Box,
-    // Button,
+    Button,
     // Link,
     Avatar,
     Typography
 } from '@material-ui/core';
+import DoneIcon from '@material-ui/icons/Done';
+import BlockIcon from '@material-ui/icons/Block';
 import { makeStyles } from '@material-ui/core/styles'
 
 const useStyles = makeStyles(theme => ({
@@ -41,9 +43,20 @@ const HomePage = (props) => {
                     props.userData.subscription.updated_at
                 ) > 0 
                     ? 
-                <p>Доступ имеется</p>
+                <Box display="flex" flexDirection="column">
+                    <Box display="flex" flexDirection="row">
+                        <Typography>Доступ имеется</Typography>
+                        <DoneIcon />
+                    </Box>
+                </Box>
                     : 
-                <p>Доступ отстуствует, требуется оплата</p>
+                <Box display="flex" flexDirection="column">
+                    <Box display="flex" flexDirection="row">
+                        <Typography>Доступ отстуствует, требуется оплата</Typography>
+                        <BlockIcon />
+                    </Box>
+                    <Button color="primary">Перейти к оплате</Button>
+                </Box>
             }
         </div>
     )
