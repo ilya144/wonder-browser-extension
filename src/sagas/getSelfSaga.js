@@ -11,8 +11,8 @@ export default function* getSelfSaga(){
         })
     ));
 
-    // console.log(data);
-    // console.log(status);
+    console.log(data);
+    console.log(status);
     // console.log(rest);
 
     if (status === 200){

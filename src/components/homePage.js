@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import {
     Box,
@@ -17,10 +17,15 @@ const useStyles = makeStyles(theme => ({
 
 const HomePage = (props) => {
 
-    const classes = useStyles()
-
+    const classes = useStyles();
     return(
         <div>
+            {
+                /*global chrome*/
+                chrome.cookies.getAll({"name": "_wonder_frontend_session"}, (cookie) => {
+                    console.log(cookie);
+                })
+            }
             <Box display="flex" justifyContent="space-between" alignItems="center">
                 <Avatar src={props.userData.avatar_url} />
                 <Typography className={classes.FIO}>
@@ -45,7 +50,7 @@ const HomePage = (props) => {
 }
 
 const mapStateToProps = (state) => {
-    const { userData } = state.LoginReducer;
+    const { userData } = state.GetSelfReducer;
     return {
         userData
     }

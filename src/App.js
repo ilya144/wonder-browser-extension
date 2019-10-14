@@ -11,7 +11,7 @@ const App = (props) => {
 
     useEffect(() => {
         props.getSelf();
-    })
+    }, [])
 
     return(
         <Container className="App" maxWidth="xs">
@@ -23,7 +23,7 @@ const App = (props) => {
 }
 
 const mapStateToProps = (state) => {
-    const { userData } = state.LoginReducer;
+    const { userData } = state.GetSelfReducer;
     return {userData}
 }
 
