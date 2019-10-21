@@ -1,3 +1,4 @@
+/* global pako, chrome */
 console.log("I'm alive");
 
 function removeTags(DOM, tagName){
@@ -29,7 +30,28 @@ function sendToStorageHTML(){
         "resolved": false,
         "verbose": "only body without scripts and styles"
 
-    }, () => console.log("HTML sended successfuly"));
+    }, (response) => {
+        console.log(response);
+        // const frameHTML = chrome.runtime.getURL("frame.hmtl");
+        // var iframe = document.createElement('iframe');
+        // document.body.appendChild(iframe);
+        // iframe.contentDocument.srcdoc = getFrameHtml("frame.html");
+        const frame = document.createElement("iframe");
+        frame.className = "wondersourcing-frame";
+        frame.style.width = "200px";
+        frame.style.height = "100vh";
+        document.body.appendChild(frame);
+        const iDoc = frame.contentWindow.document;
+        // const root = iDoc.createElement("div");
+        // root.id = "root";
+        // iDoc.body.appendChild(root);
+        const htmlElem = document.createElement("html");
+        htmlElem.innerHTML = getFrameHtml("frame.html");
+
+        iDoc.head.innerHTML = htmlElem.firstChild.innerHTML
+        iDoc.body.innerHTML = htmlElem.lastChild.innerHTML
+    });
+    // }, () => console.log("HTML sended successfuly"));
     // chrome.storage.sync.set({
     //     "parsed_html": {
     //         [window.location.href] : {
@@ -39,6 +61,14 @@ function sendToStorageHTML(){
     //         }
     //     }
     // }, () => console.log("HTML sended successfuly"));
+}
+
+function getFrameHtml(htmlFileName) {
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.open("GET", chrome.runtime.getURL(htmlFileName), false);
+    xmlhttp.send();
+
+    return xmlhttp.responseText;
 }
 
 function matchInPathname(regexp){

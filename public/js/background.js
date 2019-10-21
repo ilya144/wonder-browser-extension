@@ -1,5 +1,13 @@
-chrome.runtime.onMessage.addListener((msg) => {
+/* global chrome */
+chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
+    
+    sendHtml(msg);
+    sendResponse({res: "message sended"});
+    return true;
 
+});
+
+async function sendHtml(msg){
     chrome.cookies.getAll({"name": "_wonder_frontend_session"}, (cookie) => {
     
         fetch("https://wondersourcing.ru/profiles/associated/"+msg.IRI, {
@@ -13,23 +21,24 @@ chrome.runtime.onMessage.addListener((msg) => {
             console.log(res);
             if (res.status===200){                        
                 res.json().then(data => {
-                    SendNotification( 200, data );
+                    sendNotification( 200, data );
                 });
             } else if ( [ 204, 401, 500 ].includes(res.status) ){
-                SendNotification( res.status );
+                sendNotification( res.status );
             } else {
-                SendNotification();
+                sendNotification();                
             }
         });
     });
-});
+}
 
 
-function SendNotification( type, data ){
+function sendNotification( type, data ){
     let options;
     
     switch (type) {
         case 200:
+            console.log(data);
             options = {
                 type: "list",
                 title: data.display_name,
