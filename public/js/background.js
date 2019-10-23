@@ -1,13 +1,17 @@
 /* global chrome */
 chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
     
-    sendHtml(msg);
-    sendResponse({res: "message sended"});
+    if (msg.type !== "gzip") return;
+
+    sendHtml(msg, sender);
+    sendResponse({
+        res: "message sended"
+    });
     return true;
 
 });
 
-async function sendHtml(msg){
+async function sendHtml(msg, sender){
     chrome.cookies.getAll({"name": "_wonder_frontend_session"}, (cookie) => {
     
         fetch("https://wondersourcing.ru/profiles/associated/"+msg.IRI, {
@@ -15,6 +19,7 @@ async function sendHtml(msg){
             body: msg.html,
             credentials: 'same-origin',
             headers:{
+                "Accept": "application/json",
                 cookie: cookie[0].name+"="+cookie[0].value
             }
         }).then(res => {
@@ -22,11 +27,28 @@ async function sendHtml(msg){
             if (res.status===200){                        
                 res.json().then(data => {
                     sendNotification( 200, data );
+                    chrome.tabs.sendMessage(sender.tab.id, {
+                        "IRI": msg.IRI,
+                        "type": "data",
+                        "data": data
+                    });
+                    return {
+                        status: 200,
+                        data
+                    };
                 });
             } else if ( [ 204, 401, 500 ].includes(res.status) ){
                 sendNotification( res.status );
+                return {
+                    status: res.status,
+                    data: null
+                };
             } else {
-                sendNotification();                
+                sendNotification();
+                return {
+                    status: "unknown",
+                    data: null
+                };
             }
         });
     });

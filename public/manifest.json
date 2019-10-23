@@ -3,7 +3,7 @@
 
   "name": "wonder-browser-extension",
   "description": "TODO desc and name too",
-  "version": "0.6",
+  "version": "0.7",
 
   
   "browser_action": {
@@ -48,7 +48,12 @@
       ],
       "js":[
         "js/pako.min.js",
-        "js/dumperHTML.js"
+        "js/dump.js",
+
+        "/static/js/main-frame.js"
+      ],
+      "css":[
+        "/static/css/frame.css"
       ]
     }
   ],

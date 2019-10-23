@@ -1,4 +1,8 @@
-* {
+#WonderSourcing-frame{
+  position: fixed;
+  top: 0;
+  z-index: 777;
+
   margin: 0;
   padding: 0;
   font-family: "Roboto", "Helvetica", "Arial", sans-serif;
