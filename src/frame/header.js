@@ -1,6 +1,6 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import { Box, Typography, Fab } from "@material-ui/core";
+import { Box, Typography, Fab, Link } from "@material-ui/core";
 import ExpandLessIcon from "@material-ui/icons/ExpandLess";
 
 const useStyles = makeStyles(theme => ({
@@ -62,10 +62,12 @@ const Header = props => {
           Sourcing
         </Typography>
       </Box>
-      <Fab variant="extended" aria-label="delete" className={classes.fab}>
-        АККАУНТ
-        <ExpandLessIcon className={classes.extendedIcon} />
-      </Fab>
+      <Link href="https://wondersourcing.ru/customers/edit" style={{textDecoration: "none"}}>
+        <Fab variant="extended" aria-label="delete" className={classes.fab}>
+          АККАУНТ
+          <ExpandLessIcon className={classes.extendedIcon} />
+        </Fab>
+      </Link>
     </Box>
   );
 };

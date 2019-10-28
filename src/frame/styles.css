@@ -1,7 +1,8 @@
 #WonderSourcing-frame{
   position: fixed;
   top: 0;
-  z-index: 777;
+  left: 0;
+  z-index: 7777;
 
   margin: 0;
   padding: 0;

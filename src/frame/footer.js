@@ -31,13 +31,23 @@ const Footer = props => {
 
   return (
     <Box className={classes.footer}>
+      { props.data_truncated===undefined && props.data.empty===undefined ? (
       <Button
         variant="contained"
-        href="#contained-buttons"
+        href={props.url}
         className={classes.button}
       >
         Показать резюме на WonderSourcing
       </Button>
+      ) : props.data_truncated ?
+      <Button
+        variant="contained"
+        href="https://wondersourcing.ru"
+        className={classes.button}
+      >
+        Перейти к оплате
+      </Button>
+       : null }
     </Box>
   );
 };

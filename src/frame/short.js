@@ -48,6 +48,7 @@ const Short = ({ data, ...props }) => {
           Развернуть
         </Typography>
       </Box>
+      {data.empty ? null :
       <Grid container alignItems="center" direction="column">
         {
           data.data_truncated===undefined ? 
@@ -67,7 +68,7 @@ const Short = ({ data, ...props }) => {
             />
           ))
         }
-      </Grid>
+      </Grid>}
     </Box>
   );
 };

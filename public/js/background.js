@@ -26,7 +26,7 @@ async function sendHtml(msg, sender){
             console.log(res);
             if (res.status===200){                        
                 res.json().then(data => {
-                    sendNotification( 200, data );
+                    // sendNotification( 200, data );
                     chrome.tabs.sendMessage(sender.tab.id, {
                         "IRI": msg.IRI,
                         "type": "data",
@@ -38,13 +38,33 @@ async function sendHtml(msg, sender){
                     };
                 });
             } else if ( [ 204, 401, 500 ].includes(res.status) ){
-                sendNotification( res.status );
+                // sendNotification( res.status );
+                if (res.status===204) {
+                    chrome.tabs.sendMessage(sender.tab.id, {
+                        "IRI": msg.IRI,
+                        "type": "data",
+                        "data": {
+                            status: "user_not_found",
+                            empty: true
+                        }
+                    });
+                }
+                if (res.status===401) {
+                    chrome.tabs.sendMessage(sender.tab.id, {
+                        "IRI": msg.IRI,
+                        "type": "data",
+                        "data": {
+                            status: "unauthorized",
+                            empty: true
+                        }
+                    });
+                } 
                 return {
                     status: res.status,
                     data: null
                 };
             } else {
-                sendNotification();
+                // sendNotification();
                 return {
                     status: "unknown",
                     data: null

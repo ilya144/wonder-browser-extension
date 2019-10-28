@@ -40,10 +40,12 @@ const useStyles = makeStyles(theme => ({
     fontSize: "0.91em"
   },
   gridTitle: {
-    color: "#47a5fd",
+    // color: "#47a5fd",
+    color: "#000000",
     fontWeight: 460,
     marginBottom: "10px",
-    marginTop: "15px"
+    marginTop: "15px",
+    textAlign: "start"
   },
   eye: {
     // color: "#8f2bca",
@@ -109,14 +111,15 @@ const User = ({ data, ...props }) => {
             filter: data.data_truncated===undefined ? "none" : "blur(3px)"
           }}>
             {data.city+", "+data.country}
-            <br />
-            Some text
+            {/* <br />
+            Some text */}
           </Typography>
         </Grid>
       </Box>
       <Box>
         <Typography className={classes.gridTitle}>Контакты</Typography>
         <Grid>
+          { data.has_contacts.includes("phone") ? (
           <Grid container direction="row" justify="space-between">
             <PhoneInTalk className={classes.leftIcon} />
             <Typography style={{ filter: "blur(3px)" }}>
@@ -124,9 +127,13 @@ const User = ({ data, ...props }) => {
             </Typography>
             <Visibility className={classes.eye} />
           </Grid>
+          ) : null}
 
+          { data.has_contacts.includes("phone") && data.has_contacts.length>1 ? (
           <Divider className={classes.divider} />
+          ) : null}
 
+          { data.has_contacts.includes("email") ? (
           <Grid container direction="row" justify="space-between">
             <Email className={classes.leftIcon} />
             <Typography
@@ -137,17 +144,25 @@ const User = ({ data, ...props }) => {
             </Typography>
             <Visibility className={classes.eye} />
           </Grid>
+          ) : null}
 
+          { data.has_contacts.includes("email") && data.has_contacts.length>2 ? (
           <Divider className={classes.divider} />
+          ) : null}
 
+          { data.has_contacts.includes("telegram") ? (
           <Grid container direction="row" justify="space-between">
             <Telegram className={classes.leftIcon} />
             <Typography style={{ filter: "blur(3px)" }}>@nickname</Typography>
             <Visibility className={classes.eye} />
           </Grid>
+          ) : null}
 
+          { data.has_contacts.includes("email") && data.has_contacts.length>3 ? (
           <Divider className={classes.divider} />
+          ) : null}
 
+          { data.has_contacts.includes("skype") ? (
           <Grid container direction="row" justify="space-between">
             <Icon className={classes.leftIcon}>
               <Skype />
@@ -155,10 +170,15 @@ const User = ({ data, ...props }) => {
             <Typography style={{ filter: "blur(3px)" }}>skype_login</Typography>
             <Visibility className={classes.eye} />
           </Grid>
+          ) : null}
         </Grid>
       </Box>
 
-      <Button variant="outlined" className={classes.contactsBtn}>
+      <Button 
+        href={data.data_truncated ? "https://wondersourcing.ru" : data.url} 
+        variant="outlined" 
+        className={classes.contactsBtn}
+      >
         Показать контакты
       </Button>
 

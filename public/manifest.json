@@ -39,9 +39,9 @@
         "*://habr.com/*",
         "*://habrahabr.ru/*",
         "*://toster.ru/*",
-        "*://facebook.com/*",
+        "*://facebook.com/*", "*://www.facebook.com/*",
         "*://fb.com/*",
-        "*://linkedin.com/*",
+        "*://linkedin.com/*", "*://www.linkedin.com/*",
         "*://behance.net/*",
         "*://dribbble.com/*",
         "*://moikrug.ru/*"
