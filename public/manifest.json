@@ -44,7 +44,8 @@
         "*://linkedin.com/*", "*://www.linkedin.com/*",
         "*://behance.net/*",
         "*://dribbble.com/*",
-        "*://moikrug.ru/*"
+        "*://moikrug.ru/*",
+        "*://*.hh.ru/*"
       ],
       "js":[
         "js/pako.min.js",

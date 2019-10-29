@@ -128,6 +128,10 @@ function dumpHTML(){
             sendToStorageHTML();
         }
     }
+
+    if (Hostname.includes("hh.ru")){
+        matchInPathname(RegExp("^/resume/[\.a-zа-яё\%0-9_\-]+/?$", "i"))
+    }
 }
 
 chrome.storage.sync.get("dump", (dump_on) => {
