@@ -51,7 +51,7 @@ const NotFound = props => {
                     <Typography style={{color: "#000000"}}>Вы не авторизированы</Typography>
                     <PriorityHighIcon />
                 </Box>
-                <Button color="primary" href="https://wondersourcing.ru/users/sign_in" style={{color: "#3f51b5!important"}} >
+                <Button color="primary" target="_blank" href="https://wondersourcing.ru/users/sign_in" style={{color: "#3f51b5!important"}} >
                     Войти
                 </Button>
             </Box>

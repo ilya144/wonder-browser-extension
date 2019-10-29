@@ -35,6 +35,7 @@ const Footer = props => {
       <Button
         variant="contained"
         href={props.url}
+        target="_blank"
         className={classes.button}
       >
         Показать резюме на WonderSourcing
@@ -43,6 +44,7 @@ const Footer = props => {
       <Button
         variant="contained"
         href="https://wondersourcing.ru"
+        target="_blank"
         className={classes.button}
       >
         Перейти к оплате

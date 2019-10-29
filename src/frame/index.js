@@ -93,11 +93,26 @@ function App(props) {
 
 const frame = document.createElement("div");
 frame.id = "WonderSourcing-frame";
+const iFrame = document.createElement("iframe");
+iFrame.scrolling = "no";
+document.body.appendChild(frame);
+
+frame.appendChild(iFrame);
+const iDoc = iFrame.contentWindow.document;
+
+iDoc.body.style.margin = "0";
+iDoc.body.style.padding = "0";
+
+const root = iDoc.createElement("div");
+
+root.id = "root";
+root.style.position = "absolute";
+
+iDoc.body.appendChild(root);
 // frame.style.width = "375px";
 // frame.style.height = "100vh";
 // frame.style.border = "";
 
-document.body.appendChild(frame);
 // const shadow = frame.attachShadow({mode: "open"});
 // const root = document.createElement("div");
 // root.id = "root";
@@ -106,12 +121,13 @@ document.body.appendChild(frame);
 const jss = create({
   ...jssPreset(),
   // Define a custom insertion point that JSS will look for when injecting the styles into the DOM.
-  // insertionPoint: document.getElementById('jss-insertion-point'), 
-  insertionPoint: document.head
-}).use(
+  // insertionPoint: document.getElementById('jss-insertion-point'),
+  // insertionPoint: document.head,
+  insertionPoint: root
+});
+jss.use(
   isolate({
-      isolate: true,
-      reset: 'all'
+      isolate: true
   })
 );
 
@@ -125,6 +141,6 @@ const jss = create({
 chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
   if (msg.type !== "data") return;
 
-  ReactDOM.render(<App data={msg.data}/>, document.getElementById("WonderSourcing-frame"));
-  // ReactDOM.render(<App data={msg.data}/>, root);
+  // ReactDOM.render(<App data={msg.data}/>, document.getElementById("WonderSourcing-frame"));
+  ReactDOM.render(<App data={msg.data}/>, root);
 });

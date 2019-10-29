@@ -54,7 +54,10 @@ const Short = ({ data, ...props }) => {
           data.data_truncated===undefined ? 
           Object.keys(data.linkmap).map(key => (
             data.linkmap[key].map(resource => (
-              <Link href={resource}>
+              <Link 
+                href={resource}
+                target="_blank"
+              >
                 <Avatar
                   src={"https://wondersourcing.ru/assets/service_icons/" + key}
                   className={classes.resourceIcon}

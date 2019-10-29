@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import {
   Box,
@@ -77,8 +77,22 @@ const normalizeName = (name) => {
   return name[0].toUpperCase() + name.slice(1)
 }
 
+const getContacts = (id) => {
+  var xmlhttp = new XMLHttpRequest();
+  xmlhttp.open("GET", `https://wondersourcing.ru/profiles/${id}/contacts`, false);
+  // xmlhttp.withCredentials = true;
+  xmlhttp.send();
+
+  console.log(xmlhttp);
+  return JSON.parse(xmlhttp.responseText);
+}
+
 const User = ({ data, ...props }) => {
   const classes = useStyles();
+
+  const [Contacts, setContacts] = useState(
+    data.has_contacts.reduce((obj, elem) => Object.assign({}, { [elem]: null }, obj), {})
+  );
 
   return (
     <Box p="12px">
@@ -122,8 +136,8 @@ const User = ({ data, ...props }) => {
           { data.has_contacts.includes("phone") ? (
           <Grid container direction="row" justify="space-between">
             <PhoneInTalk className={classes.leftIcon} />
-            <Typography style={{ filter: "blur(3px)" }}>
-              +7 (000) 123 45 09
+            <Typography style={{ filter: Contacts.phone ? "" : "blur(3px)" }}>
+              {Contacts.phone ? Contacts.phone : "+7 (000) 123 45 09"}
             </Typography>
             <Visibility className={classes.eye} />
           </Grid>
@@ -138,9 +152,9 @@ const User = ({ data, ...props }) => {
             <Email className={classes.leftIcon} />
             <Typography
               className={classes.typoMail}
-              style={{ filter: "blur(3px)" }}
+              style={{ filter: Contacts.email ? "" : "blur(3px)" }}
             >
-              client@email.com
+              {Contacts.email ? Contacts.email : "client@email.com"}
             </Typography>
             <Visibility className={classes.eye} />
           </Grid>
@@ -153,12 +167,14 @@ const User = ({ data, ...props }) => {
           { data.has_contacts.includes("telegram") ? (
           <Grid container direction="row" justify="space-between">
             <Telegram className={classes.leftIcon} />
-            <Typography style={{ filter: "blur(3px)" }}>@nickname</Typography>
+            <Typography style={{ filter: Contacts.telegram ? "" : "blur(3px)" }}>
+              {Contacts.telegram ? Contacts.telegram : "@nickname"}
+            </Typography>
             <Visibility className={classes.eye} />
           </Grid>
           ) : null}
 
-          { data.has_contacts.includes("email") && data.has_contacts.length>3 ? (
+          { data.has_contacts.includes("telegram") && data.has_contacts.length>3 ? (
           <Divider className={classes.divider} />
           ) : null}
 
@@ -167,20 +183,34 @@ const User = ({ data, ...props }) => {
             <Icon className={classes.leftIcon}>
               <Skype />
             </Icon>
-            <Typography style={{ filter: "blur(3px)" }}>skype_login</Typography>
+            <Typography style={{ filter: Contacts.skype ? "" : "blur(3px)" }}>
+              {Contacts.skype ? Contacts.skype : "skype_login"}
+            </Typography>
             <Visibility className={classes.eye} />
           </Grid>
           ) : null}
         </Grid>
       </Box>
-
+      
+      {data.data_truncated===undefined ? 
       <Button 
-        href={data.data_truncated ? "https://wondersourcing.ru" : data.url} 
-        variant="outlined" 
+        // href={data.data_truncated ? "https://wondersourcing.ru" : data.url}
+        variant="outlined"
         className={classes.contactsBtn}
+        onClick={() => {
+          console.log(Contacts);
+          const json_data = getContacts(data.id);
+          setContacts(
+            data.has_contacts.reduce((obj, elem) => Object.assign(
+              {}, 
+              { [elem]: json_data[elem] ? json_data[elem][0] : null }, obj
+              ), {})
+          );
+        }}
       >
         Показать контакты
       </Button>
+      : null}
 
       <Box>
         <Typography className={classes.gridTitle}>Профили</Typography>
@@ -189,7 +219,10 @@ const User = ({ data, ...props }) => {
             data.data_truncated===undefined ? 
             Object.keys(data.linkmap).map(key => (
               data.linkmap[key].map(resource => (
-                <Link href={resource}>
+                <Link 
+                  href={resource}
+                  target="_blank"
+                >
                   <Avatar
                     src={"https://wondersourcing.ru/assets/service_icons/" + key}
                     className={classes.resourceIcon}
