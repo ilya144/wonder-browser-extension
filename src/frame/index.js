@@ -39,6 +39,13 @@ function App(props) {
   const classes = useStyles();
   const [isOpened, setOpen] = useState( props.data.empty ? false : true );
   const [open, close] = [() => setOpen(true), () => setOpen(false)];
+  if (isOpened) {
+    props.setSize("408px", "100vh");
+    props.setTop("0");
+  } else {
+    props.setSize("75px", props.data.empty ? "132px" : "70vh");
+    props.setTop("30vh");
+  }
   
   return (
     <StylesProvider jss={jss}>
@@ -47,7 +54,7 @@ function App(props) {
       maxWidth="xs"
       style={{
         minHeight: isOpened ? "600px" : "",
-        marginTop: isOpened ? "0" : "30vh",
+        // marginTop: isOpened ? "0" : "30vh",
 
         backgroundColor: "#fff",
         padding: "0",
@@ -91,13 +98,22 @@ function App(props) {
   );
 }
 
-const frame = document.createElement("div");
-frame.id = "WonderSourcing-frame";
+// const frame = document.createElement("div");
+// frame.id = "WonderSourcing-frame";
 const iFrame = document.createElement("iframe");
 iFrame.scrolling = "no";
-document.body.appendChild(frame);
+iFrame.style.border = "none";
+iFrame.style.position = "fixed";
+iFrame.style.zIndex = 7777;
+iFrame.style.top = "0";
+iFrame.style.left = "0";
+iFrame.style.width = "0";
+iFrame.style.height = "0";
 
-frame.appendChild(iFrame);
+// document.body.appendChild(frame);
+document.body.appendChild(iFrame);
+
+// frame.appendChild(iFrame);
 const iDoc = iFrame.contentWindow.document;
 
 iDoc.body.style.margin = "0";
@@ -117,6 +133,12 @@ iDoc.body.appendChild(root);
 // const root = document.createElement("div");
 // root.id = "root";
 // shadow.appendChild(root);
+const setSize = (width, height) => {
+  iFrame.style.width = width;
+  iFrame.style.height = height;
+}
+// const setHeight = height => {}
+const setTop = top => {iFrame.style.top = top}
 
 const jss = create({
   ...jssPreset(),
@@ -142,5 +164,5 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
   if (msg.type !== "data") return;
 
   // ReactDOM.render(<App data={msg.data}/>, document.getElementById("WonderSourcing-frame"));
-  ReactDOM.render(<App data={msg.data}/>, root);
+  ReactDOM.render(<App data={msg.data} setSize={setSize} setTop={setTop}/>, root);
 });

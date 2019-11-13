@@ -1,3 +1,4 @@
+/* global chrome */
 import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import {
@@ -78,13 +79,30 @@ const normalizeName = (name) => {
 }
 
 const getContacts = (id) => {
-  var xmlhttp = new XMLHttpRequest();
-  xmlhttp.open("GET", `https://wondersourcing.ru/profiles/${id}/contacts`, false);
+  // var xmlhttp = new XMLHttpRequest();
+  // xmlhttp.open("GET", `https://wondersourcing.ru/profiles/${id}/contacts`, false);
   // xmlhttp.withCredentials = true;
-  xmlhttp.send();
+  // xmlhttp.send();
 
-  console.log(xmlhttp);
-  return JSON.parse(xmlhttp.responseText);
+  // console.log(xmlhttp);
+  // return JSON.parse(xmlhttp.responseText);
+  var contacts = 123;
+  const innerContactsSet = (data) => {
+    console.log(contacts);
+    contacts = data;
+    console.log(data);
+  }
+
+  const x = chrome.runtime.sendMessage({
+    // "IRI": encodeURIComponent(window.location.hostname + pathname),
+    "type": "contacts",
+    "id": id
+  }, (response) => {
+    innerContactsSet(response.contacts ? response.contacts : null);
+  });
+  console.log(contacts);
+  
+  return contacts;
 }
 
 const User = ({ data, ...props }) => {
@@ -93,6 +111,26 @@ const User = ({ data, ...props }) => {
   const [Contacts, setContacts] = useState(
     data.has_contacts.reduce((obj, elem) => Object.assign({}, { [elem]: null }, obj), {})
   );
+
+  const fetchContacts = (id) => {
+
+    chrome.runtime.sendMessage({
+      // "IRI": encodeURIComponent(window.location.hostname + pathname),
+      "type": "contacts",
+      "id": id
+    }, (response) => {
+      const json_data = response.contacts ? response.contacts : null;
+      if (json_data){
+        setContacts(
+          data.has_contacts.reduce((obj, elem) => Object.assign(
+            {}, 
+            { [elem]: json_data[elem] ? json_data[elem][0] : null }, obj
+            ), {})
+        );
+      }
+    });
+
+  }
 
   return (
     <Box p="12px">
@@ -198,14 +236,8 @@ const User = ({ data, ...props }) => {
         variant="outlined"
         className={classes.contactsBtn}
         onClick={() => {
-          console.log(Contacts);
-          const json_data = getContacts(data.id);
-          setContacts(
-            data.has_contacts.reduce((obj, elem) => Object.assign(
-              {}, 
-              { [elem]: json_data[elem] ? json_data[elem][0] : null }, obj
-              ), {})
-          );
+          // console.log(Contacts);
+          fetchContacts(data.id)
         }}
       >
         Показать контакты

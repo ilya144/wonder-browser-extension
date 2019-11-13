@@ -62,7 +62,7 @@ const Header = props => {
           Sourcing
         </Typography>
       </Box>
-      <Link href="https://wondersourcing.ru/customers/edit" style={{textDecoration: "none"}}>
+      <Link target="_blank" href="https://wondersourcing.ru/customers/edit" style={{textDecoration: "none"}}>
         <Fab variant="extended" aria-label="delete" className={classes.fab}>
           АККАУНТ
           <ExpandLessIcon className={classes.extendedIcon} />
