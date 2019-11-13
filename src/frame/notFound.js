@@ -49,7 +49,7 @@ const NotFound = props => {
             <Box display="flex" flexDirection="column">
                 <Box display="flex" flexDirection="row" justifyContent="center">
                     <Typography style={{color: "#000000"}}>Вы не авторизированы</Typography>
-                    <PriorityHighIcon />
+                    <PriorityHighIcon style={{color: "red"}} />
                 </Box>
                 <Button color="primary" target="_blank" href="https://wondersourcing.ru/users/sign_in" style={{color: "#3f51b5!important"}} >
                     Войти

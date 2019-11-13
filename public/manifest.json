@@ -25,6 +25,20 @@
   ],
   "web_accessible_resources": [
     "img/wondersourcing-logo.svg",
+    "img/ws-logo-bw.png",
+
+    "img/service_icons/fb.png",
+    "img/service_icons/gh.png",
+    "img/service_icons/hb.png",
+    "img/service_icons/kg.png",
+    "img/service_icons/li.png",
+    "img/service_icons/mk.png",
+    "img/service_icons/so_ru.png",
+    "img/service_icons/so.png",
+    "img/service_icons/ts.png",
+    "img/service_icons/tw.png",
+    "img/service_icons/vk.png",
+
     "frame.html"
   ],
   "content_scripts":[

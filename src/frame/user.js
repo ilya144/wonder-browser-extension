@@ -78,39 +78,13 @@ const normalizeName = (name) => {
   return name[0].toUpperCase() + name.slice(1)
 }
 
-const getContacts = (id) => {
-  // var xmlhttp = new XMLHttpRequest();
-  // xmlhttp.open("GET", `https://wondersourcing.ru/profiles/${id}/contacts`, false);
-  // xmlhttp.withCredentials = true;
-  // xmlhttp.send();
-
-  // console.log(xmlhttp);
-  // return JSON.parse(xmlhttp.responseText);
-  var contacts = 123;
-  const innerContactsSet = (data) => {
-    console.log(contacts);
-    contacts = data;
-    console.log(data);
-  }
-
-  const x = chrome.runtime.sendMessage({
-    // "IRI": encodeURIComponent(window.location.hostname + pathname),
-    "type": "contacts",
-    "id": id
-  }, (response) => {
-    innerContactsSet(response.contacts ? response.contacts : null);
-  });
-  console.log(contacts);
-  
-  return contacts;
-}
-
 const User = ({ data, ...props }) => {
   const classes = useStyles();
 
   const [Contacts, setContacts] = useState(
     data.has_contacts.reduce((obj, elem) => Object.assign({}, { [elem]: null }, obj), {})
   );
+  const [ContactsBtn, setContactsBtn] = useState(true);
 
   const fetchContacts = (id) => {
 
@@ -235,9 +209,11 @@ const User = ({ data, ...props }) => {
         // href={data.data_truncated ? "https://wondersourcing.ru" : data.url}
         variant="outlined"
         className={classes.contactsBtn}
+        style={ContactsBtn ? {display: "block"} : {display: "none"}}
         onClick={() => {
           // console.log(Contacts);
-          fetchContacts(data.id)
+          fetchContacts(data.id);
+          setContactsBtn(false);
         }}
       >
         Показать контакты
@@ -256,14 +232,14 @@ const User = ({ data, ...props }) => {
                   target="_blank"
                 >
                   <Avatar
-                    src={"https://wondersourcing.ru/assets/service_icons/" + key}
+                    src={chrome.extension.getURL("img/service_icons/") + key + ".png"}
                     className={classes.resourceIcon}
                   />
                 </Link>
               ))
             )) : data.has_links.map(elem => (
               <Avatar
-                src={"https://wondersourcing.ru/assets/service_icons/" + elem}
+                src={chrome.extension.getURL("img/service_icons/") + elem + ".png"}
                 className={classes.resourceIcon}
               />
             ))

@@ -1,3 +1,4 @@
+/* global chrome */
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { Box, Icon, Fab, Grid, Avatar, Typography, Link } from "@material-ui/core";
@@ -22,7 +23,14 @@ const useStyles = makeStyles(theme => ({
     "&:hover, &:focus": {
       cursor: "pointer"
     }
-  }
+  },
+  openText: {
+    color: "#909191",
+    fontWeight: "bold",
+    fontSize: "10px",
+    userSelect: "none",
+    webkitUserSelect: "none"
+}
 }));
 
 const Short = ({ data, ...props }) => {
@@ -36,15 +44,13 @@ const Short = ({ data, ...props }) => {
         style={{ backgroundColor: "#eeeff0", padding: "8px" }}
       >
         <Avatar
-          src="https://wondersourcing.ru//assets/ws-logo-bw.png"
+          src={chrome.extension.getURL("img/ws-logo-bw.png")}
           className={classes.favicon}
         />
         <Fab className={classes.favicon} onClick={() => props.open()}>
           <ArrowRight />
         </Fab>
-        <Typography
-          style={{ color: "#909191", fontWeight: "bold", fontSize: "10px" }}
-        >
+        <Typography className={classes.openText}>
           Развернуть
         </Typography>
       </Box>
@@ -59,14 +65,14 @@ const Short = ({ data, ...props }) => {
                 target="_blank"
               >
                 <Avatar
-                  src={"https://wondersourcing.ru/assets/service_icons/" + key}
+                  src={chrome.extension.getURL("img/service_icons/") + key + ".png"}
                   className={classes.resourceIcon}
                 />
               </Link>
             ))
           )) : data.has_links.map(elem => (
             <Avatar
-              src={"https://wondersourcing.ru/assets/service_icons/" + elem}
+              src={chrome.extension.getURL("img/service_icons/") + elem + ".png"}
               className={classes.resourceIcon}
             />
           ))
