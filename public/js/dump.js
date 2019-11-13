@@ -12,6 +12,7 @@ function sendToStorageHTML(){
     virtualDOM.body.innerHTML = document.body.innerHTML;
     ["style", "script"].map((tag) => removeTags(virtualDOM.body, tag));
 
+    console.log((new TextEncoder().encode(virtualDOM.body.innerHTML)).length); //bytes inflated
     const payload = pako.gzip(
         virtualDOM.body.innerHTML,
         {to: "string"}
@@ -23,6 +24,8 @@ function sendToStorageHTML(){
     } else {
         pathname = window.location.pathname;
     }
+    
+    console.log(payload.length); //bytes deflated
     chrome.runtime.sendMessage({
         "IRI": encodeURIComponent(window.location.hostname + pathname),
         "html": payload,
@@ -139,3 +142,4 @@ chrome.storage.sync.get("dump", (dump_on) => {
         dumpHTML();
     }
 });
+
