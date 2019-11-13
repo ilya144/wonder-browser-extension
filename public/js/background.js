@@ -21,6 +21,7 @@ async function sendHtml(msg, sender){
             headers:{
                 "Accept": "application/json",
                 "Content-Encoding": "gzip",
+                "Content-Type": "application/octet-stream",
                 cookie: cookie[0] && cookie[0].name+"="+cookie[0].value
             }
         }).then(res => {
