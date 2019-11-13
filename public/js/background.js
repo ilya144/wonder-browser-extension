@@ -20,7 +20,8 @@ async function sendHtml(msg, sender){
             credentials: 'same-origin',
             headers:{
                 "Accept": "application/json",
-                cookie: cookie[0].name+"="+cookie[0].value
+                "Content-Encoding": "gzip",
+                cookie: cookie[0] && cookie[0].name+"="+cookie[0].value
             }
         }).then(res => {
             console.log(res);
@@ -133,4 +134,26 @@ function sendNotification( type, data ){
 
     options.iconUrl = "img/wondersourcing-logo.svg";
     return chrome.notifications.create(options);
+}
+
+chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
+    
+    if (msg.type !== "contacts") return;
+
+    const contacts = getContacts(msg.id);
+    sendResponse({
+        res: "message sended",
+        contacts
+    });
+    return true;
+})
+
+function getContacts(id){
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.open("GET", `https://wondersourcing.ru/profiles/${id}/contacts`, false);
+    xmlhttp.withCredentials = true;
+    xmlhttp.send();
+  
+    // console.log(xmlhttp);
+    return JSON.parse(xmlhttp.responseText);
 }
