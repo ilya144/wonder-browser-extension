@@ -16,7 +16,7 @@ const App = (props) => {
     return(
         <Container className="App" maxWidth="xs">
             {
-                props.userData.id===undefined ? <LoginPage/> : <HomePage/>
+                props.userData===null/*.id===undefined*/ ? <LoginPage/> : <HomePage/>
             }
         </Container>
     )
