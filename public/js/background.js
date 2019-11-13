@@ -16,7 +16,7 @@ async function sendHtml(msg, sender){
     
         fetch("https://wondersourcing.ru/profiles/associated/"+msg.IRI, {
             method: "POST",
-            body: msg.html,
+            body: STRUINT(msg.html),
             credentials: 'same-origin',
             headers:{
                 "Accept": "application/json",
@@ -156,4 +156,12 @@ function getContacts(id){
   
     // console.log(xmlhttp);
     return JSON.parse(xmlhttp.responseText);
+}
+
+function STRUINT(str){
+	const arr = new Uint8Array(str.length);
+	for (let i = 0; i < str.length; i++){
+		arr[i] = str.charCodeAt(i);
+	}
+	return arr;
 }
