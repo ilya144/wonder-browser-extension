@@ -36,11 +36,11 @@ const HomePage = (props) => {
                 </Typography>
             </Box>
             {   
-                props.userData.subscription &&
+                props.userData.profiles_subscription &&
                 Date.parse(
-                    props.userData.subscription.valid_through
+                    props.userData.profiles_subscription.valid_through
                 ) - Date.parse(
-                    props.userData.subscription.updated_at
+                    props.userData.profiles_subscription.updated_at
                 ) > 0 
                     ? 
                 <Box display="flex" flexDirection="column">
