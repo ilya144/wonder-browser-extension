@@ -114,9 +114,8 @@ function LoginForm(props) {
             <Box display="flex" justifyContent="center">
             <Button
                 color="primary"
-                onClick={() => {
-                console.log("TODO forgot pass");
-                }}
+                href="https://wondersourcing.ru/#resetpassword"
+                target="_blank"
             >
                 Восстановить пароль
             </Button>

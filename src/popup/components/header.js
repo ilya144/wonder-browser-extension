@@ -51,10 +51,9 @@ export default function Header(props) {
             </Typography>
             </Box>
             <Button
-            color="primary"
-            onClick={() => {
-                window.location.href = "https://wondersourcing.ru/users/sign_in";
-            }}
+                color="primary"
+                href="https://wondersourcing.ru/#signup"
+                target="_blank"
             >
             регистрация
             </Button>
