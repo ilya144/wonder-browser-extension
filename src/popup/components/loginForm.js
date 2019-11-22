@@ -6,6 +6,7 @@ import {
     TextField,
     FormControlLabel,
     Checkbox,
+    FormControl,
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles'
 import { connect } from 'react-redux';
@@ -14,6 +15,10 @@ import { signIn } from '../actions/actions';
 const useStyles = makeStyles(theme => ({
     Login: {
         textAlign: "center",
+        marginTop: theme.spacing(1)
+    },
+    form: {
+        width: '100%', // Fix IE 11 issue.
         marginTop: theme.spacing(1)
     },
     submit: {
@@ -26,6 +31,16 @@ function LoginForm(props) {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [rememberMe, setRememberMe] = useState(1);
+    const [isError, setError] = useState(false);
+
+    const formValidate = () => {
+        if (password.length === 0 || email.length === 0){
+            setError(true);
+            return false;
+        } else {
+            return true;
+        }
+    }
   
     return(
         <div>
@@ -55,7 +70,7 @@ function LoginForm(props) {
             </Box> */}
             <TextField
                 margin="normal"
-                required
+                required={true}
                 fullWidth
                 label="Адрес электронной почты"
                 autoComplete="email"
@@ -64,53 +79,61 @@ function LoginForm(props) {
                 id="user_email"
                 type="email"
                 value={email}
+
+                error={ email.length === 0 && isError ? true : false }
+                helperText={email.length === 0 && isError ? "Необходимо ввести почту" : ""}
                 onChange={e => {
                     setEmail(e.target.value)
                 }}
             />
             <TextField
                 margin="normal"
-                required
+                required={true}
                 fullWidth
                 name="user[password]"
                 label="Пароль"
                 type="password"
                 id="user_password"
                 autoComplete="current-password"
+
+                error={ password.length === 0 && isError ? true : false }
+                helperText={ password.length === 0 && isError ? "Необходимо ввести пароль" : ""}
                 onChange={e => {
                     setPassword(e.target.value)
                 }}
             />
             <FormControlLabel
-            control={
-                <Checkbox
-                checked={rememberMe ? true : false}
-                name="user[remember_me]"
-                value="remember"
-                color="primary"
-                id="user_remember_me"
-                onChange={() => {
-                    setRememberMe(!rememberMe)
-                }}
-                />
-            }
-            label="Запомнить меня на этом компьютере"
+                control={
+                    <Checkbox
+                    checked={rememberMe ? true : false}
+                    name="user[remember_me]"
+                    value="remember"
+                    color="primary"
+                    id="user_remember_me"
+                    onChange={() => {
+                        setRememberMe(!rememberMe)
+                    }}
+                    />
+                }
+                label="Запомнить меня на этом компьютере"
             />
             <Button
-            type="submit"
-            name="commit"
-            fullWidth
-            variant="contained"
-            color="primary"
-            className={classes.submit}
-            disabled={props.isFetching}
-            onClick={e => {
-                e.preventDefault();
-                props.signIn(email, password, rememberMe);
-            }}
+                type="submit"
+                name="commit"
+                fullWidth
+                variant="contained"
+                color="primary"
+                className={classes.submit}
+                disabled={props.isFetching}
+                onClick={e => {
+                    e.preventDefault();
+                    if ( formValidate() )
+                        props.signIn(email, password, rememberMe);
+                }}
             >
             Войти
             </Button>
+            <Typography>{props.error}</Typography>
             <Box display="flex" justifyContent="center">
             <Button
                 color="primary"
@@ -133,7 +156,7 @@ const mapStateToProps = (state) => {
     }
 }
 const mapDispatchToProps = (dispatch) => ({
-    signIn: (email, password) => dispatch(signIn(email, password))
+    signIn: (email, password, rememberMe) => dispatch(signIn(email, password, rememberMe))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(LoginForm);

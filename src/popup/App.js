@@ -11,7 +11,7 @@ const App = (props) => {
 
     useEffect(() => {
         props.getSelf();
-    }, [])
+    }, [props.userDataLogin])
 
     return(
         <Container className="App" maxWidth="xs">
@@ -24,7 +24,8 @@ const App = (props) => {
 
 const mapStateToProps = (state) => {
     const { userData } = state.GetSelfReducer;
-    return {userData}
+    const userDataLogin = state.LoginReducer;
+    return {userData, userDataLogin}
 }
 
 const mapDispatchToProps = (dispatch) => ({

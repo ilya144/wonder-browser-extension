@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import createSagaMiddleware from 'redux-saga';
 import {
-    // Provider,
     createStore,
     applyMiddleware,
     compose
@@ -18,7 +17,12 @@ class Store extends Component {
         super(props);
         const sagaMiddleware = createSagaMiddleware();
         const middleware = [ sagaMiddleware ];
-        const store = createStore(RootReducer, compose(applyMiddleware(...middleware)))
+        const store = createStore(
+			RootReducer,
+			compose(
+				applyMiddleware(...middleware)
+			)
+		)
         sagaMiddleware.run(RootSaga, store.dispatch);
 
         this.state = {

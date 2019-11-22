@@ -14,15 +14,22 @@ export default function* signInSaga({ email, password, rememberMe }){
         } 
     };
 
+    // unset throwing error for proper saga's work
+    axios.interceptors.response.use(response => {
+        return response;
+      }, error => {
+        return error.response;
+      });
+
     const { data, status, ...rest } = yield call((data) => (
         axios.post("https://wondersourcing.ru/users/sign_in.json", data, {
             withCredentials: true,
         })
     ), loginData);
     
-    // console.log(data);
-    // console.log(status);
-    // console.log(rest);
+    console.log(data);
+    console.log(status);
+    console.log(rest);
 
     if (status === 201){
         yield put({type: ACTIONS.LOGIN_RESPONSE, userData: data});
