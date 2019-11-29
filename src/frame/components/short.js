@@ -1,7 +1,7 @@
 /* global chrome */
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import { Box, Icon, Fab, Grid, Avatar, Typography, Link } from "@material-ui/core";
+import { Box, Fab, Grid, Avatar, Typography, Link } from "@material-ui/core";
 import { ArrowRight } from "@material-ui/icons";
 
 const useStyles = makeStyles(theme => ({
@@ -54,30 +54,33 @@ const Short = ({ data, ...props }) => {
           Развернуть
         </Typography>
       </Box>
-      {data.empty ? null :
-      <Grid container alignItems="center" direction="column">
-        {
-          data.data_truncated===undefined ? 
-          Object.keys(data.linkmap).map(key => (
-            data.linkmap[key].map(resource => (
-              <Link 
-                href={resource}
-                target="_blank"
-              >
+      {
+        data.empty ? null : (
+          <Grid container alignItems="center" direction="column">
+            {
+              data.data_truncated===undefined ? 
+              Object.keys(data.linkmap).map(key => (
+                data.linkmap[key].map(resource => (
+                  <Link 
+                    href={resource}
+                    target="_blank"
+                  >
+                    <Avatar
+                      src={chrome.extension.getURL("img/service_icons/") + key + ".png"}
+                      className={classes.resourceIcon}
+                    />
+                  </Link>
+                ))
+              )) : data.has_links.map(elem => (
                 <Avatar
-                  src={chrome.extension.getURL("img/service_icons/") + key + ".png"}
+                  src={chrome.extension.getURL("img/service_icons/") + elem + ".png"}
                   className={classes.resourceIcon}
                 />
-              </Link>
-            ))
-          )) : data.has_links.map(elem => (
-            <Avatar
-              src={chrome.extension.getURL("img/service_icons/") + elem + ".png"}
-              className={classes.resourceIcon}
-            />
-          ))
-        }
-      </Grid>}
+              ))
+            }
+          </Grid>
+        )
+      }
     </Box>
   );
 };

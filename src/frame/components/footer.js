@@ -28,29 +28,30 @@ const useStyles = makeStyles(theme => ({
 
 const Footer = props => {
   const classes = useStyles();
+  const allowPayBtn = false;
 
   return (
     <Box className={classes.footer}>
-      { props.data_truncated===undefined && props.data.empty===undefined ? (
-      <Button
-        variant="contained"
-        href={props.url}
-        target="_blank"
-        className={classes.button}
-      >
-        Показать резюме на WonderSourcing
-      </Button>
-      ) : null
-      // props.data_truncated ?
-      // <Button
-      //   variant="contained"
-      //   href="https://wondersourcing.ru"
-      //   target="_blank"
-      //   className={classes.button}
-      // >
-      //   Перейти к оплате
-      // </Button>
-      //  : null 
+      { 
+        props.data_truncated===undefined && props.data.empty===undefined ? (
+          <Button
+            variant="contained"
+            href={props.url}
+            target="_blank"
+            className={classes.button}
+          >
+            Показать резюме на WonderSourcing
+          </Button>
+        ) : props.data_truncated && allowPayBtn ? (
+          <Button
+            variant="contained"
+            href="https://wondersourcing.ru"
+            target="_blank"
+            className={classes.button}
+          >
+            Перейти к оплате
+          </Button>
+        ) : null
       }
     </Box>
   );
