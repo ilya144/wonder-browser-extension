@@ -41,7 +41,7 @@ async function sendHtml(msg, sender){
                 });
             } else if ( [ 204, 401, 500 ].includes(res.status) ){
                 // sendNotification( res.status );
-                if (res.status===204) {
+                if (res.status===204 || res.status===500) {
                     chrome.tabs.sendMessage(sender.tab.id, {
                         "IRI": msg.IRI,
                         "type": "data",
