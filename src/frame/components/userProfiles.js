@@ -9,7 +9,8 @@ import {
 } from "@material-ui/core";
 
 const UserProfiles = ({ data, classes, ...props }) => {
-
+  if (data.empty) return null;
+  
   return(
     <Box>
       <Typography className={classes.gridTitle}>Профили</Typography>

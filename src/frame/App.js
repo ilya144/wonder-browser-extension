@@ -36,7 +36,7 @@ const App = ({ jss, ...props }) => {
           height: isOpened ? "100vh" : props.data.empty ? "" : "100vh",
           overflow: "hidden",
   
-          maxWidth: "375px",
+          maxWidth: "235px",
           boxShadow: "0 0 10px rgba(0, 0, 0.1, 0.5)"
         }}
       >

@@ -11,6 +11,7 @@ import Skype from './skype';
 
 
 const UserContacts = ({ classes, Contacts, data, ...props}) => {
+  if (data.empty) return null;
 
   return(
     <Box>

@@ -36,7 +36,8 @@ const Header = props => {
   const classes = useStyles();
 
   return (
-    <Box className={classes.header} display="flex" pt="40px">
+    // <Box className={classes.header} display="flex" pt="40px">
+    <Box className={classes.header} display="flex" flexDirection="column-reverse" pt="5px">
       <Box
         className={classes.toolbarBoxWS}
         flexGrow={1}

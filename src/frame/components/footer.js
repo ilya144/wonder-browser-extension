@@ -12,14 +12,14 @@ const useStyles = makeStyles(theme => ({
   },
   button: {
     margin: "auto",
-    padding: "15px 0",
+    width: "90%",     // after minimize
+    padding: "8px 0", // padding: "15px 0", before minimize
     color: "#5c6c7d", //#65b4ef outline in maket
     backgroundColor: "#fff",
 
     position: "absolute",
-    top: "-35px",
-    left: "3%",
-    right: "3%",
+    top: "-40px",     // top: "-35px", before minimize
+    left: "5%",       // left: "3%", before minimize
 
     border: "1px #65b4ef solid",
     textTransform: "none"

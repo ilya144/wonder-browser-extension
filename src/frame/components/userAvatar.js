@@ -13,7 +13,7 @@ const UserAvatar = ({ data, classes, ...props }) => {
   }
 
   return(
-    <Box display="flex" alignItems="center" m="10px" height="64px">
+    <Box display="flex" alignItems="center" m="10px" height="64px" mt="0">
       <Avatar
         className={classes.userAvatar}
         src={data.empty ? "" : data.main_avatar}
@@ -27,12 +27,12 @@ const UserAvatar = ({ data, classes, ...props }) => {
       >
         {
           data.empty ? (
-            <Typography variant="h6">
+            <Typography className={classes.userAvatarTitle} variant="h6">
                 Пользователь не найден
             </Typography>
           ) : (
             <Fragment>
-              <Typography variant="h6">
+              <Typography className={classes.userAvatarTitle} variant="h6">
                 {
                   data.data_truncated===undefined ?
                   (

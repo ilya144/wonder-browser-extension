@@ -13,7 +13,9 @@ const User = ({ data, ...props }) => {
   const classes = UserStyles();
 
   const [Contacts, setContacts] = useState(
-    data.has_contacts.reduce((obj, elem) => Object.assign({}, { [elem]: null }, obj), {})
+    data.has_contacts ? 
+      data.has_contacts.reduce((obj, elem) => Object.assign({}, { [elem]: null }, obj), {})
+    : null
   );
   const [ContactsBtn, setContactsBtn] = useState(true);
 
@@ -25,7 +27,7 @@ const User = ({ data, ...props }) => {
       const json_data = response.contacts ? response.contacts : null;
       if (json_data){
         setContacts(
-          data.has_contacts.reduce((obj, elem) => Object.assign(
+          data.has_contacts && data.has_contacts.reduce((obj, elem) => Object.assign(
             {}, 
             { [elem]: json_data[elem] ? json_data[elem][0] : null }, obj
             ), {})
@@ -59,7 +61,7 @@ const User = ({ data, ...props }) => {
         data={data}
       />
       {
-        data.data_truncated===undefined ? (
+        data.data_truncated===undefined && !data.empty ? (
           <Button 
             variant="outlined"
             className={classes.contactsBtn}
