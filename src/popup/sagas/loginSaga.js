@@ -3,6 +3,9 @@ import ACTIONS from '../actions/types';
 import axios from 'axios';
 
 
+/**
+ *  Сага авторизации
+ */
 export default function* signInSaga({ email, password, rememberMe }){
     yield put({ type: ACTIONS.LOGIN_REQUEST});
 
@@ -27,9 +30,9 @@ export default function* signInSaga({ email, password, rememberMe }){
         })
     ), loginData);
     
-    console.log(data);
-    console.log(status);
-    console.log(rest);
+    // console.log(data);
+    // console.log(status);
+    // console.log(rest);
 
     if (status === 201){
         yield put({type: ACTIONS.LOGIN_RESPONSE, userData: data});

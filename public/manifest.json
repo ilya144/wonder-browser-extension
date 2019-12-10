@@ -3,7 +3,7 @@
 
   "name": "WonderSourcing browser extension",
   "description": "TODO desc and name too",
-  "version": "0.10.1",
+  "version": "0.10.2",
 
   
   "browser_action": {

@@ -7,7 +7,9 @@ import { jssPreset } from "@material-ui/styles";
 
 import App from "./App";
 
-
+/**
+ * Создание блока iframe и внедрение его на страницу
+ */
 const iFrame = document.createElement("iframe");
 
 iFrame.scrolling = "no";
@@ -37,12 +39,27 @@ root.style.position = "absolute";
 
 iDoc.body.appendChild(root);
 
+
+/**
+ * Функция измениния длины и высоты фрейма
+ * @param {number} width 
+ * @param {number} height 
+ */
 const setSize = (width, height) => {
   iFrame.style.width = width;
   iFrame.style.height = height;
 }
+
+/**
+ * Функция изменения отступа фрейма от верхнего края
+ * @param {number} top
+ */
 const setTop = top => {iFrame.style.top = top}
 
+
+/**
+ * Создание объекта jss для внедрения стилей в тело фрейма
+ */
 const jss = create({
     ...jssPreset(),
     insertionPoint: root
@@ -53,7 +70,9 @@ jss.use(
     })
 );
 
-
+/**
+ * Обработчик сообщений от background.js на отоброжение контента фрейма
+ */
 chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
     if (msg.type !== "data") return;
 

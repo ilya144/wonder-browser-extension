@@ -1,80 +1,65 @@
 /* global pako, chrome, React, App */
-console.log("I'm alive");
 
+/**
+ * Функция удаляет из DOM все блоки с указанным тегом
+ * 
+ * @param {document} DOM - объект виртульного DOM
+ * @param {string} tagName - название тега
+ */
 function removeTags(DOM, tagName){
     Array.from(DOM.getElementsByTagName(tagName)).map((e) => e.remove());
 }
 
+/**
+ * Функция отправки html страницы
+ * без тегов style и script
+ * в формате gzip
+ */
 function sendToStorageHTML(){
-    console.log("start sending dump");
     
     const virtualDOM = document.implementation.createHTMLDocument("virtual");
     virtualDOM.body.innerHTML = document.body.innerHTML;
     ["style", "script"].map((tag) => removeTags(virtualDOM.body, tag));
 
-    console.log((new TextEncoder().encode(virtualDOM.body.innerHTML)).length); //bytes inflated
     const payload = pako.gzip(
         virtualDOM.body.innerHTML,
         {to: "string"}
     );
 
-    let pathname;
-    if (window.location.pathname.endsWith("/")) {
-        pathname = window.location.pathname.slice(0, -1);
-    } else {
-        pathname = window.location.pathname;
-    }
+    const hostname = window.location.hostname;
+    const windowPathname = window.location.pathname;
+    const pathname = windowPathname.endsWith("/") ?
+                        windowPathname.slice(0, -1) : windowPathname;
     
-    console.log(payload.length); //bytes deflated
     chrome.runtime.sendMessage({
-        "IRI": encodeURIComponent(window.location.hostname + pathname),
+        "IRI": encodeURIComponent(hostname + pathname),
         "html": payload,
         "type": "gzip",
-        "resolved": false,
-        "verbose": "only body without scripts and styles"
-
-    }, (response) => {
-        console.log(response);
-
-        // const frameHTML = chrome.runtime.getURL("frame.hmtl");
-        // var iframe = document.createElement('iframe');
-        // document.body.appendChild(iframe);
-        // iframe.contentDocument.srcdoc = getFrameHtml("frame.html");
-        // const frame = document.createElement("iframe");
-        // frame.className = "wondersourcing-frame";
-        // frame.style.width = "200px";
-        // frame.style.height = "100vh";
-        // document.body.appendChild(frame);
-        // const iDoc = frame.contentWindow.document;
-        // const root = iDoc.createElement("div");
-        // root.id = "root";
-        // iDoc.body.appendChild(root);
-        // const htmlElem = document.createElement("html");
-        // htmlElem.innerHTML = getFrameHtml("frame.html");
-
-        // iDoc.head.innerHTML = htmlElem.firstChild.innerHTML
-        // iDoc.body.innerHTML = htmlElem.lastChild.innerHTML
     });
 }
 
-// function getFrameHtml(htmlFileName) {
-//     var xmlhttp = new XMLHttpRequest();
-//     xmlhttp.open("GET", chrome.runtime.getURL(htmlFileName), false);
-//     xmlhttp.send();
-
-//     return xmlhttp.responseText;
-// }
-
+/**
+ * Проверка pathname страницы на соответствие
+ * с регулярным выражением
+ * 
+ * В случае успеха вызывается функция отправки
+ * html страницы
+ * 
+ * @param {RegExp} regexp - регулярное выражение
+ */
 function matchInPathname(regexp){
-    console.log("start checking regexp");
     if (window.location.pathname.match(regexp)){
-        console.log("regexp passed");
         sendToStorageHTML();
     }
 }
 
-function dumpHTML(){
-    console.log("start switch");
+/**
+ * Точка входа плагина
+ * 
+ * функция проверяет url страницы на соответствие
+ * с хостами в списке и вызывает функцию проверки pathname
+ */
+function matchInHostname(){
     const Hostname = window.location.hostname
     switch (window.location.hostname) {
         case "stackoverflow.com":
@@ -137,9 +122,4 @@ function dumpHTML(){
     }
 }
 
-chrome.storage.sync.get("dump", (dump_on) => {
-    if (dump_on) {
-        dumpHTML();
-    }
-});
-
+matchInHostname();

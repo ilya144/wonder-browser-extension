@@ -2,6 +2,9 @@ import { put, call } from 'redux-saga/effects';
 import ACTIONS from '../actions/types';
 import axios from 'axios';
 
+/**
+ *  Сага получение информации о пользователе текущей сессии
+ */
 export default function* getSelfSaga(){
     yield put({ type: ACTIONS.GET_SELF_REQUEST});
 
@@ -11,9 +14,8 @@ export default function* getSelfSaga(){
         })
     ));
 
-    console.log(data);
-    console.log(status);
-    // console.log(rest);
+    // console.log(data);
+    // console.log(status);
 
     if (status === 200){
         yield put({type: ACTIONS.GET_SELF_RESPONSE, userData: data});

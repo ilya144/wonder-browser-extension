@@ -11,7 +11,7 @@ import RootSaga from './sagas/rootSaga';
 import App from './App.js';
 
 
-
+// компонент redux store
 class Store extends Component {
     constructor(props) {
         super(props);

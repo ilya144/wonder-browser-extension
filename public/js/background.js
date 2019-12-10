@@ -1,6 +1,8 @@
 /* global chrome */
+/**
+ * Обработчик сообщений от отправителя html gzip
+ */
 chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
-    
     if (msg.type !== "gzip") return;
 
     sendHtml(msg, sender);
@@ -11,6 +13,12 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
 
 });
 
+/**
+ * Функция ajax отправки html gzip на сервер
+ * 
+ * @param {object} msg - json сообщение
+ * @param {*} sender 
+ */
 async function sendHtml(msg, sender){
     chrome.cookies.getAll({"name": "_wonder_frontend_session"}, (cookie) => {
     
@@ -28,7 +36,6 @@ async function sendHtml(msg, sender){
             console.log(res);
             if (res.status===200){                        
                 res.json().then(data => {
-                    // sendNotification( 200, data );
                     chrome.tabs.sendMessage(sender.tab.id, {
                         "IRI": msg.IRI,
                         "type": "data",
@@ -40,7 +47,6 @@ async function sendHtml(msg, sender){
                     };
                 });
             } else if ( [ 204, 401, 500 ].includes(res.status) ){
-                // sendNotification( res.status );
                 if (res.status===204 || res.status===500) {
                     chrome.tabs.sendMessage(sender.tab.id, {
                         "IRI": msg.IRI,
@@ -66,7 +72,6 @@ async function sendHtml(msg, sender){
                     data: null
                 };
             } else {
-                // sendNotification();
                 return {
                     status: "unknown",
                     data: null
@@ -76,7 +81,12 @@ async function sendHtml(msg, sender){
     });
 }
 
-
+/**
+ * Функция вывода уведомлений
+ * 
+ * @param {number} type - http код
+ * @param {object} data - json об кандидате
+ */
 function sendNotification( type, data ){
     let options;
     
@@ -137,6 +147,9 @@ function sendNotification( type, data ){
     return chrome.notifications.create(options);
 }
 
+/**
+ * Обработчик сообщений от фрейма на получение контактов
+ */
 chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
     
     if (msg.type !== "contacts") return;
@@ -149,16 +162,25 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
     return true;
 })
 
+/**
+ * Функция отправки запроса на получение контактов кандидата
+ * 
+ * @param {number} id - идентификатор кандидата
+ */
 function getContacts(id){
     var xmlhttp = new XMLHttpRequest();
     xmlhttp.open("GET", `https://wondersourcing.ru/profiles/${id}/contacts`, false);
     xmlhttp.withCredentials = true;
     xmlhttp.send();
   
-    // console.log(xmlhttp);
     return JSON.parse(xmlhttp.responseText);
 }
 
+/**
+ * Функция создания байтового массива из строки
+ * 
+ * @param {string} str - исходная строка
+ */
 function STRUINT(str){
 	const arr = new Uint8Array(str.length);
 	for (let i = 0; i < str.length; i++){
